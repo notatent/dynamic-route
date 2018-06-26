@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>dynamic-route</artifactId>
+        <groupId>com.sirius.zuul2</groupId>
+        <version>20180624</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sirius.zuul2</groupId>
+    <artifactId>etcd</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.coreos</groupId>
+            <artifactId>jetcd-core</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.coreos:*</include>
+                                    <include>com.google.api.grpc:proto-google-common-protos</include>
+                                    <include>com.google.code.gson:gson</include>
+                                    <include>com.google.code.findbugs:jsr305</include>
+                                    <include>com.google.errorprone:error_prone_annotations</include>
+                                    <include>com.google.instrumentation:instrumentation-api</include>
+                                    <include>com.google.guava:guava</include>
+                                    <include>com.google.protobuf:*</include>
+                                    <include>io.grpc:*</include>
+                                    <include>io.netty:*</include>
+                                    <include>io.opencensus:*</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.netty</pattern>
+                                    <shadedPattern>internal.io.netty</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>internal.com.google</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
